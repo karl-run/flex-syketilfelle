@@ -38,7 +38,7 @@ class LeaderElection(
             log.info("Ser ikke etter leader, returnerer at jeg er leader")
             return true
         }
-        return kallElector()
+        return true
     }
 
     private fun kallElector(): Boolean {
