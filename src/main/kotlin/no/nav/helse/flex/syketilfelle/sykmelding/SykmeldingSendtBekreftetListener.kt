@@ -1,6 +1,7 @@
 package no.nav.helse.flex.syketilfelle.sykmelding
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import no.nav.helse.flex.syketilfelle.logger
 import no.nav.helse.flex.syketilfelle.objectMapper
 import no.nav.helse.flex.syketilfelle.sykmelding.domain.SykmeldingKafkaMessage
 import org.apache.kafka.clients.consumer.ConsumerRecord
@@ -16,6 +17,8 @@ class SykmeldingSendtBekreftetListener(
     private val sykmeldingLagring: SykmeldingLagring
 ) {
 
+    val log = logger()
+
     @KafkaListener(
         topics = [SYKMELDINGSENDT_TOPIC],
         id = "sykmelding-sendt",
@@ -23,6 +26,7 @@ class SykmeldingSendtBekreftetListener(
         containerFactory = "syketilfelleKafkaListenerContainerFactory"
     )
     fun listenSendt(cr: ConsumerRecord<String, String?>, acknowledgment: Acknowledgment) {
+        log.info("Mottok sykmelding sendt: ${cr.value()}")
         listen(cr, acknowledgment)
     }
 
