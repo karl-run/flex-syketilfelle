@@ -1,5 +1,6 @@
 package no.nav.helse.flex.syketilfelle.kafkaprodusering
 
+import jakarta.annotation.PostConstruct
 import no.nav.helse.flex.syketilfelle.logger
 import no.nav.helse.flex.syketilfelle.syketilfellebit.KafkaSyketilfellebit
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -23,6 +24,11 @@ class SyketilfellebitKafkaProducer(
 
     fun kalkulerPartisjonForFnr(fnr: String): Int {
         return kalkulerPartisjon(fnr.toByteArray(), antallPartisjoner)
+    }
+
+    @PostConstruct
+    fun post() {
+        log.info("Antall partisjoner for topic $SYKETILFELLEBIT_TOPIC er $antallPartisjoner")
     }
 
     fun produserMelding(kafkaSyketilfellebit: KafkaSyketilfellebit) {
